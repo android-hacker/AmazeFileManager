@@ -18,7 +18,6 @@ import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.animation.DecelerateInterpolator;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -32,19 +31,14 @@ import com.amaze.filemanager.database.CloudHandler;
 import com.amaze.filemanager.filesystem.HybridFile;
 import com.amaze.filemanager.filesystem.RootHelper;
 import com.amaze.filemanager.filesystem.SingletonUsbOtg;
-import com.amaze.filemanager.fragments.AppsListFragment;
-import com.amaze.filemanager.fragments.CloudSheetFragment;
-import com.amaze.filemanager.fragments.FtpServerFragment;
+import com.amaze.filemanager.filesystem.VXPFoler;
 import com.amaze.filemanager.fragments.MainFragment;
 import com.amaze.filemanager.fragments.preference_fragments.PreferencesConstants;
-import com.amaze.filemanager.fragments.preference_fragments.QuickAccessPref;
 import com.amaze.filemanager.ui.dialogs.GeneralDialogCreation;
-import com.amaze.filemanager.utils.BookSorter;
 import com.amaze.filemanager.utils.DataUtils;
 import com.amaze.filemanager.utils.OTGUtil;
 import com.amaze.filemanager.utils.OpenMode;
 import com.amaze.filemanager.utils.ScreenUtils;
-import com.amaze.filemanager.utils.TinyDB;
 import com.amaze.filemanager.utils.Utils;
 import com.amaze.filemanager.utils.application.AppConfig;
 import com.amaze.filemanager.utils.cloud.CloudUtil;
@@ -52,19 +46,11 @@ import com.amaze.filemanager.utils.files.FileUtils;
 import com.amaze.filemanager.utils.theme.AppTheme;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageLoader;
-import com.cloudrail.si.interfaces.CloudStorage;
-import com.cloudrail.si.services.Box;
-import com.cloudrail.si.services.Dropbox;
-import com.cloudrail.si.services.GoogleDrive;
-import com.cloudrail.si.services.OneDrive;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Collections;
 
 import static android.os.Build.VERSION.SDK_INT;
-import static com.amaze.filemanager.fragments.preference_fragments.PreferencesConstants.PREFERENCE_SHOW_SIDEBAR_FOLDERS;
-import static com.amaze.filemanager.fragments.preference_fragments.PreferencesConstants.PREFERENCE_SHOW_SIDEBAR_QUICKACCESSES;
 
 /**
  * @author Emmanuel Messulam <emmanuelbendavid@gmail.com>
@@ -245,6 +231,14 @@ public class Drawer implements NavigationView.OnNavigationItemSelectedListener {
                 icon1 = R.drawable.ic_drawer_root_white;
             } else name = f.getName();
 
+            if (VXPFoler.INTERNAL.folder.equals(f)) {
+                name = VXPFoler.INTERNAL.name;
+            } else if (VXPFoler.VEXTERNAL.folder.equals(f)) {
+                name = VXPFoler.VEXTERNAL.name;
+            } else if (VXPFoler.VXSDCAARD.folder.equals(f)) {
+                name = VXPFoler.VXSDCAARD.name;
+            }
+
             if (f.isDirectory() || f.canExecute()) {
                 addNewItem(menu, STORAGES_GROUP, order++, name, new MenuMetadata(file), icon1,
                         R.drawable.ic_show_chart_black_24dp);
@@ -256,6 +250,7 @@ public class Drawer implements NavigationView.OnNavigationItemSelectedListener {
         }
         dataUtils.setStorages(storageDirectories);
 
+        /*
         if (dataUtils.getServers().size() > 0) {
             Collections.sort(dataUtils.getServers(), new BookSorter());
             synchronized (dataUtils.getServers()) {
@@ -394,6 +389,7 @@ public class Drawer implements NavigationView.OnNavigationItemSelectedListener {
                 R.drawable.ic_android_white_24dp, null);
 
 
+*/
         addNewItem(menu, LASTGROUP, order++, R.string.setting,
                 new MenuMetadata(() -> {
                     Intent in = new Intent(mainActivity, PreferencesActivity.class);

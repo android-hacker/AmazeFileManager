@@ -41,7 +41,6 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.service.quicksettings.TileService;
@@ -55,7 +54,6 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
-import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -91,6 +89,7 @@ import com.amaze.filemanager.filesystem.HybridFileParcelable;
 import com.amaze.filemanager.filesystem.PasteHelper;
 import com.amaze.filemanager.filesystem.RootHelper;
 import com.amaze.filemanager.filesystem.SingletonUsbOtg;
+import com.amaze.filemanager.filesystem.VXPFoler;
 import com.amaze.filemanager.filesystem.ssh.CustomSshJConfig;
 import com.amaze.filemanager.filesystem.ssh.SshConnectionPool;
 import com.amaze.filemanager.fragments.AppsListFragment;
@@ -620,6 +619,12 @@ public class MainActivity extends PermissionsActivity implements SmbConnectionLi
     public synchronized ArrayList<String> getStorageDirectories() {
         // Final set of paths
         final ArrayList<String> rv = new ArrayList<>();
+        rv.add(VXPFoler.INTERNAL.folder.getAbsolutePath());
+        rv.add(VXPFoler.VEXTERNAL.folder.getAbsolutePath());
+        rv.add(VXPFoler.VXSDCAARD.folder.getAbsolutePath());
+        return rv;
+
+        /*
         // Primary physical SD-CARD (not emulated)
         final String rawExternalStorage = System.getenv("EXTERNAL_STORAGE");
         // All Secondary SD-CARDs (all exclude primary) separated by ":"
@@ -691,6 +696,7 @@ public class MainActivity extends PermissionsActivity implements SmbConnectionLi
             if (isUsbDeviceConnected()) rv.add(OTGUtil.PREFIX_OTG + "/");
         }
         return rv;
+        */
     }
 
     /**
